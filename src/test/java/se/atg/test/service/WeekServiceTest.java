@@ -19,6 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static se.atg.test.util.TestUtils.getCalendarForagivenDate;
 import static se.atg.test.util.TestUtils.getWinterBustGameEvents;
+import static se.atg.test.util.Utils.convertStringToDate;
+import static se.atg.test.util.Utils.convertToLocalDate;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -42,8 +44,9 @@ class WeekServiceTest {
     void testGetTodayDate() {
         when(clock.instant()).thenReturn(
                 Instant.parse("2022-12-12T10:05:23.653Z"));
-        Calendar calendar = getCalendarForagivenDate();
-        assertEquals(weekService.getTodayDate().toString(), calendar.getTime().toString());
+        var localDateFromApi = convertToLocalDate(weekService.getTodayDate());
+        var expectedLocalDate = convertToLocalDate(convertStringToDate("2022-12-12"));
+        assertTrue(localDateFromApi.isEqual(expectedLocalDate));
     }
 
 
