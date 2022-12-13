@@ -9,6 +9,7 @@ import se.atg.test.dto.GameEvent;
 import javax.validation.constraints.NotNull;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 import static se.atg.test.util.Utils.convertToLocalDate;
 
@@ -38,9 +39,11 @@ public class GamesSortService {
 
         weekNoGamesEventMap.keySet().forEach(
                 weekNo -> {
-                    final List<GameEvent> sortedGamesList = weekNoGamesEventMap.get(weekNo);
-                    processGamesListByWeek(sortedGamesList);
-                    weekService.createFormattedString(out, weekNo, sortedGamesList);
+                    var gameEvents = Optional.ofNullable(weekNoGamesEventMap.get(weekNo));
+                    if (gameEvents.isPresent()) {
+                        processGamesListByWeek(gameEvents.get());
+                        weekService.createFormattedString(out, weekNo, gameEvents.get());
+                    }
                 }
         );
         return out.toString();
