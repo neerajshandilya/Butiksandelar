@@ -1,0 +1,25 @@
+server:
+  port: 8080
+  #    servlet:
+  #        context-path: /Butiksandelar
+  error:
+    include-stacktrace: always
+spring:
+  application:
+    name: Butiksandelar
+
+application:
+  big-game-configurations:
+    - type: "V86"
+      day: "Wednesday"
+    - type: "V75"
+      day: "Saturday"
+    - type: "GS75"
+      day: "Sunday"
+  winterburst-configuration:
+    start-date: '2022-12-23'
+    end-date: '2022-12-31'
+    no-game-date: '2022-12-24'
+    allowed-game-type: 'V75'
+    big-game-dates: [ '2022-12-23','2022-12-25','2022-12-26','2022-12-31' ]
+  date-format: "yyyy-mm-dd"
