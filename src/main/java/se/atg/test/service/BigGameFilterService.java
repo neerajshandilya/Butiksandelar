@@ -40,7 +40,12 @@ public class BigGameFilterService {
         var gameEventListIterator = sortedGamesList.listIterator();
         while (gameEventListIterator.hasNext()) {
             var gameEvent = gameEventListIterator.next();
-            if (isWinterBurstConditionApply(gameEvent)) {
+
+            var todayLocalDate = convertToLocalDate(weekService.getTodayDate());
+            var gameEventLocalDate = convertToLocalDate(gameEvent.getDate());
+            if (gameEventLocalDate.isBefore(todayLocalDate)) {
+                gameEventListIterator.remove();
+            } else if (isWinterBurstConditionApply(gameEvent)) {
                 if (isBigWinWinterBurstGame(gameEvent)) {
                     bigGamesList.add(gameEvent);
                     gameEventListIterator.remove();
