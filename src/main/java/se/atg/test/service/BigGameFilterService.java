@@ -4,16 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.atg.test.dto.ApplicationProp;
 import se.atg.test.dto.GameEvent;
+import se.atg.test.util.Utils;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static se.atg.test.util.Utils.convertToDate;
+import static se.atg.test.util.Utils.convertToLocalDate;
 
 @Service
 public class BigGameFilterService {
@@ -32,7 +31,7 @@ public class BigGameFilterService {
         winterBustBigGamesDate = winterburstConfiguration
                 .getBigGameDates()
                 .stream()
-                .map(BigGameFilterService::convertStringToDate)
+                .map(Utils::convertStringToDate)
                 .collect(Collectors.toList());
     }
 
@@ -61,9 +60,9 @@ public class BigGameFilterService {
     }
 
     boolean isWinterBurstConditionApply(@NotNull final GameEvent gameEvent) {
-        var startDate = convertToDate(winterburstConfiguration.getStartDate());
-        var endDate = convertToDate(winterburstConfiguration.getEndDate());
-        var gameDate = convertToDate(gameEvent.getDate());
+        var startDate = convertToLocalDate(winterburstConfiguration.getStartDate());
+        var endDate = convertToLocalDate(winterburstConfiguration.getEndDate());
+        var gameDate = convertToLocalDate(gameEvent.getDate());
 
         return (gameDate.equals(startDate) || gameDate.equals(endDate))
                 || (gameDate.isBefore(endDate)) && gameDate.isAfter(startDate);
@@ -74,12 +73,6 @@ public class BigGameFilterService {
         return winterBustBigGamesDate.contains(gameEvent.getDate())
                 &&
                 gameEvent.getType().equals(winterburstConfiguration.getAllowedGameType());
-    }
-
-
-    private static Date convertStringToDate(@NotNull final String dateToConvert) {
-        LocalDate localDate = LocalDate.parse(dateToConvert);
-        return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 
 

@@ -2,9 +2,8 @@ package se.atg.test.util;
 
 import se.atg.test.dto.GameEvent;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -18,12 +17,11 @@ public class TestUtils {
         return gameEvent;
     }
 
-    static Date convertToDate(final String dateToConvert) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime dateTime = LocalDateTime.parse(dateToConvert + " 11:20", formatter);
-        return java.util.Date
-                .from(dateTime.atZone(ZoneId.systemDefault())
-                        .toInstant());
+    static Date convertToDate(final String localDate) {
+        LocalDate dateToConvert = LocalDate.parse(localDate);
+        return java.util.Date.from(dateToConvert.atStartOfDay()
+                .atZone(ZoneId.systemDefault())
+                .toInstant());
     }
 
     public static Calendar getCalendarForagivenDate() {

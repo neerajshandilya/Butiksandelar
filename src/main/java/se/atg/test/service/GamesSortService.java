@@ -10,6 +10,8 @@ import javax.validation.constraints.NotNull;
 import java.util.Comparator;
 import java.util.List;
 
+import static se.atg.test.util.Utils.convertToLocalDate;
+
 
 @Service
 public class GamesSortService {
@@ -57,19 +59,20 @@ public class GamesSortService {
 
         int indexToaddBigGameEvent = 0; //Index where big games event should be added
         while (gameEventListIterator.hasNext()) {
-            var next = gameEventListIterator.next();
-            if (next.getDate().before(weekService.getTodayDate())) {
+            var gameEvent = gameEventListIterator.next();
+            var todayLocalDate = convertToLocalDate(weekService.getTodayDate());
+            var gameEventLocalDate = convertToLocalDate(gameEvent.getDate());
+            if (gameEventLocalDate.isBefore(todayLocalDate)) {
                 gameEventListIterator.remove();
-            } else if (next.getDate().equals(weekService.getTodayDate())) {
-                indexToaddBigGameEvent = sortedGamesList.indexOf(next) + 1;
+            } else if (gameEventLocalDate.isEqual(todayLocalDate)) {
+                indexToaddBigGameEvent = sortedGamesList.indexOf(gameEvent) + 1;
                 break;
-            } else if (next.getDate().after(weekService.getTodayDate())) {
-                indexToaddBigGameEvent = sortedGamesList.indexOf(next);
+            } else if (gameEventLocalDate.isAfter(todayLocalDate)) {
+                indexToaddBigGameEvent = sortedGamesList.indexOf(gameEvent);
                 break;
             }
         }
         //Step(4) add BigGames to the index found to the sortedList
         sortedGamesList.addAll(indexToaddBigGameEvent, bigGamesList);
     }
-
 }

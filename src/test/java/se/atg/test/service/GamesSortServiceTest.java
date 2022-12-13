@@ -83,6 +83,27 @@ class GamesSortServiceTest {
 
     }
 
+    @Test
+    void testProcessGameListSampleSet3() {
+        when(clock.instant()).thenReturn(
+                Instant.parse("2022-12-07T00:00:00.653Z"));
+        var output = gamesSortService.processGameList(getGameDataSampleSet1());
+        assertEquals(
+                "V86(Wednesday)\n" +
+                        "V75(Saturday)\n" +
+                        "GS75(Sunday)\n" +
+                        "V64(Thursday)\n" +
+                        "V86(Friday)\n" +
+                        "V86(Wednesday w2)\n" +
+                        "V75(Saturday w2)\n" +
+                        "GS75(Sunday w2)\n" +
+                        "V64(Monday w2)\n" +
+                        "V64(Tuesday w2)\n" +
+                        "V64(Thursday w2)\n" +
+                        "GS75(Friday w2)\n", output);
+
+    }
+
     private List<GameEvent> getGameDataSampleSet1() {
         List<GameEvent> gameList = new ArrayList<>();
         gameList.add(getWinterBustGameEvents("2022-12-05", "V64"));
