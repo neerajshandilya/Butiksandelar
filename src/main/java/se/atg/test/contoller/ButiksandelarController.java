@@ -14,9 +14,9 @@ import java.util.List;
 @RestController
 public class ButiksandelarController {
 
-    @Autowired
-    private GamesSortService gamesSortService;
+    final private GamesSortService gamesSortService;
 
+    @Autowired
     public ButiksandelarController(GamesSortService gamesSortService) {
         this.gamesSortService = gamesSortService;
     }
@@ -28,7 +28,7 @@ public class ButiksandelarController {
 
     @RequestMapping(value = {"/"}, method = RequestMethod.POST, consumes = {"application/json"}, produces = MediaType.TEXT_PLAIN_VALUE)
     public String getStatus(@RequestBody List<GameEvent> games) {
-        return "Sorted by date \n" + gamesSortService.processGameList(games);
+        return gamesSortService.processGameList(games);
     }
 
 

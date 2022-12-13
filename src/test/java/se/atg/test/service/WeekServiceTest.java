@@ -17,7 +17,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
-import static se.atg.test.util.TestUtils.getCalendarForagivenDate;
+import static se.atg.test.util.TestUtils.getCalendarForagivenFixDate;
 import static se.atg.test.util.TestUtils.getWinterBustGameEvents;
 import static se.atg.test.util.Utils.convertStringToDate;
 import static se.atg.test.util.Utils.convertToLocalDate;
@@ -56,13 +56,13 @@ class WeekServiceTest {
 
     @Test
     void testGetDayString() {
-        Calendar calendar = getCalendarForagivenDate();
+        Calendar calendar = getCalendarForagivenFixDate();
         assertEquals(weekService.getDayString(calendar.getTime()), "Monday");
     }
 
     @Test
     void testGetWeekNumber() {
-        Calendar calendar = getCalendarForagivenDate();
+        Calendar calendar = getCalendarForagivenFixDate();
         assertEquals(weekService.getWeekNumber(calendar.getTime()), 50);
     }
 

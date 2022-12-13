@@ -24,7 +24,7 @@ public class TestUtils {
                 .toInstant());
     }
 
-    public static Calendar getCalendarForagivenDate() {
+    public static Calendar getCalendarForagivenFixDate() {
         return new Calendar.Builder()
                 .setDate(2022, Calendar.DECEMBER, 12)
                 .setTimeOfDay(11, 5, 23)
