@@ -14,6 +14,7 @@ import se.atg.test.util.FixedClockConfig;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
@@ -49,7 +50,8 @@ public class ButiksandelarControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(2))));
+                .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(2))))
+                .andDo(print());
     }
 
     @Test
@@ -74,13 +76,14 @@ public class ButiksandelarControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(0))));
+                .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(0))))
+                .andDo(print());
     }
 
     @Test
     public void givenMissingGamesEventData_thenStatus400() throws Exception {
         mvc.perform(post("/")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest()).andDo(print());
     }
 }
