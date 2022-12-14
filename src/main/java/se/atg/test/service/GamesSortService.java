@@ -22,6 +22,7 @@ public class GamesSortService {
     private final WeekService weekService;
     private final BigGameFilterService bigGameFilterService;
 
+
     @Autowired
     public GamesSortService(WeekService weekService, BigGameFilterService bigGameFilterService) {
         this.weekService = weekService;

@@ -21,6 +21,7 @@ public class ButiksandelarController {
 
     final private Validator validator;
 
+
     @Autowired
     public ButiksandelarController(GamesSortService gamesSortService, @Qualifier("gameEventValidator") Validator validator) {
         this.gamesSortService = gamesSortService;
@@ -35,6 +36,7 @@ public class ButiksandelarController {
 
     @PostMapping
     public List<String> getStatus(@RequestBody @Validated List<GameEvent> games) {
+        validator.validate(games, null);
         return gamesSortService.processGameList(games);
     }
 

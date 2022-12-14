@@ -7,6 +7,8 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import se.atg.test.dto.GameEvent;
 
+import java.util.List;
+
 import static se.atg.test.util.Utils.convertToLocalDate;
 
 @Component("gameEventValidator")
@@ -30,22 +32,25 @@ public class GameEventValidatorService implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        GameEvent gameEvent = (GameEvent) target;
-        var gameEventLocalDate = convertToLocalDate(gameEvent.getDate());
+        List<GameEvent> gameEvents = (List<GameEvent>) target;
         var todayLocalDate = convertToLocalDate(weekService.getTodayDate());
-        if (gameEventLocalDate.isBefore(todayLocalDate)) {
-            log.warn("invalid start date for the event {}", gameEvent.getName());
-            errors.rejectValue("startDate", "invalid start date for the event" + gameEvent.getName());
-        }
+        var gameEventListIterator = gameEvents.listIterator();
+        while (gameEventListIterator.hasNext()) {
+            var nextGameEvent = gameEventListIterator.next();
+            var gameEventLocalDate = convertToLocalDate(nextGameEvent.getDate());
+            if (gameEventLocalDate.isBefore(todayLocalDate)) {
+                log.warn("invalid start date for the event {} on date {} will be discarded", nextGameEvent.getName(), nextGameEvent.getDate());
+                gameEventListIterator.remove();
+                // errors.rejectValue("startDate", "invalid start date for the event" + gameEvent.getName());
+            } else if (bigGameFilterService.isWinterBurstConditionApply(nextGameEvent)) {
+                log.debug("winter burst condition apply for event {} on date {}", nextGameEvent.getName(), nextGameEvent.getDate());
+                if (!bigGameFilterService.isBigWinWinterBurstGame(nextGameEvent)) {
+                    log.warn("During winterBurstGame condition doesn't matching for {} on date {}", nextGameEvent.getName(), nextGameEvent.getDate());
+                    gameEventListIterator.remove();
+                    // errors.rejectValue("gameType", "During winterBurstGame allowed game not matching" + gameEvent.getName());
+                }
 
-        if (bigGameFilterService.isWinterBurstConditionApply(gameEvent)) {
-            log.warn("winter burst condition apply for event {}", gameEvent.getName());
-            if (!bigGameFilterService.isBigWinWinterBurstGame(gameEvent)) {
-                log.warn("During winterBurstGame allowed game not matching for {}", gameEvent.getName());
-                errors.rejectValue("gameType", "During winterBurstGame allowed game not matching" + gameEvent.getName());
             }
-
         }
-
     }
 }
