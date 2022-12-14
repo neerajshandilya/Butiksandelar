@@ -1,6 +1,5 @@
 package se.atg.test.contoller;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,39 +9,51 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import se.atg.test.ButiksandelarApplication;
-import se.atg.test.service.GamesSortService;
+import se.atg.test.util.FixedClockConfig;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.MOCK,
-        classes = ButiksandelarApplication.class)
+        classes = {ButiksandelarApplication.class, FixedClockConfig.class})
 @AutoConfigureMockMvc
 public class ButiksandelarControllerTest {
 
     @Autowired
     private MockMvc mvc;
 
-    @Autowired
-    private GamesSortService gamesSortService;
 
     @Test
-    public void getStatus() {
-    }
+    public void givenCorrectGamesEventData_thenStatus200() throws Exception {
+        String content = """
+                [
+                  {
+                    "name": "Monday: V64",
+                    "type": "V64",
+                    "start": "2022-12-12T09:30:00"
+                  },
+                  {
+                    "name": "Thursday: V64",
+                    "type": "V64",
+                    "start": "2022-12-15T09:30:00"
+                  }
+                 ]""";
 
-
-    @Ignore
-    public void givenEmployees_whenGetEmployees_thenStatus200()
-            throws Exception {
-
-        mvc.perform(post("/api/employees")
+        mvc.perform(post("/")
+                        .content(content)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content()
-                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].name", is("bob")));
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    public void givenMissingGamesEventData_thenStatus400() throws Exception {
+        mvc.perform(post("/")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
     }
 }

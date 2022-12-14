@@ -51,10 +51,6 @@ class WeekServiceTest {
 
 
     @Test
-    void createFormattedString() {
-    }
-
-    @Test
     void testGetDayString() {
         Calendar calendar = getCalendarForagivenFixDate();
         assertEquals(weekService.getDayString(calendar.getTime()), "Monday");

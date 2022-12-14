@@ -1,42 +1,28 @@
 package se.atg.test.service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
+import se.atg.test.ButiksandelarApplication;
 import se.atg.test.dto.GameEvent;
+import se.atg.test.util.FixedClockConfig;
 
-import java.time.Clock;
-import java.time.Instant;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 import static se.atg.test.util.TestUtils.getWinterBustGameEvents;
 
-@SpringBootTest
+@SpringBootTest(classes = {ButiksandelarApplication.class, FixedClockConfig.class})
 @RunWith(SpringRunner.class)
 class BigGameFilterServiceTest {
 
     @Autowired
     private BigGameFilterService bigGameFilterService;
 
-    @MockBean
-    private Clock clock;
-
-    @BeforeEach
-    void setupClock() {
-        when(clock.getZone()).thenReturn(
-                ZoneId.of("Europe/Prague"));
-        when(clock.instant()).thenReturn(
-                Instant.parse("2022-12-12T10:05:23.653Z"));
-    }
 
     @Test
     public void filterBigGameEventTestWithEmptyGameList() {
