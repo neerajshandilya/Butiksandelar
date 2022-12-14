@@ -9,8 +9,6 @@ import se.atg.test.dto.ApplicationProp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Clock;
-import java.time.Instant;
-import java.time.ZoneId;
 
 @Component
 public class UtilityComponents {
@@ -24,10 +22,10 @@ public class UtilityComponents {
 
     @Bean
     public Clock clock() {
-        return Clock.fixed(
+       /* return Clock.fixed(
                 Instant.parse("2022-12-12T10:05:23.653Z"),
-                ZoneId.of("Europe/Prague"));
-        //return Clock.systemDefaultZone();
+                ZoneId.of("Europe/Prague"));*/
+        return Clock.systemDefaultZone();
     }
 
     @Primary

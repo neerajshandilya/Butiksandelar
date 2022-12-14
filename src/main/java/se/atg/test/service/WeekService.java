@@ -35,7 +35,7 @@ public class WeekService {
         return bigGameConfigurations.contains(bigGameData);
     }
 
-    Date getTodayDate() {
+    public Date getTodayDate() {
         return Date.from(ZonedDateTime.now(clock).toInstant());
     }
 

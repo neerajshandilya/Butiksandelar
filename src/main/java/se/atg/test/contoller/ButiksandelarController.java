@@ -1,7 +1,10 @@
 package se.atg.test.contoller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.Validator;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import se.atg.test.dto.GameEvent;
 import se.atg.test.service.GamesSortService;
@@ -14,9 +17,12 @@ public class ButiksandelarController {
 
     final private GamesSortService gamesSortService;
 
+    final private Validator validator;
+
     @Autowired
-    public ButiksandelarController(GamesSortService gamesSortService) {
+    public ButiksandelarController(GamesSortService gamesSortService, @Qualifier("gameEventValidator") Validator validator) {
         this.gamesSortService = gamesSortService;
+        this.validator = validator;
     }
 
     @GetMapping
@@ -26,7 +32,7 @@ public class ButiksandelarController {
     }
 
     @PostMapping
-    public List<String> getStatus(@RequestBody List<GameEvent> games) {
+    public List<String> getStatus(@RequestBody @Validated List<GameEvent> games) {
         return gamesSortService.processGameList(games);
     }
 
