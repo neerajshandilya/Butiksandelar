@@ -1,12 +1,12 @@
 package se.atg.test.service;
 
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.atg.test.dto.ApplicationProp;
 import se.atg.test.dto.GameEvent;
 import se.atg.test.util.Utils;
 
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -35,7 +35,7 @@ public class BigGameFilterService {
                 .collect(Collectors.toList());
     }
 
-    public List<GameEvent> filterBigGameEvent(@NotNull final List<GameEvent> sortedGamesList) {
+    public List<GameEvent> filterBigGameEvent(@NonNull final List<GameEvent> sortedGamesList) {
         final List<GameEvent> bigGamesList = new ArrayList<>();
         var gameEventListIterator = sortedGamesList.listIterator();
         while (gameEventListIterator.hasNext()) {
@@ -60,11 +60,11 @@ public class BigGameFilterService {
     }
 
 
-    boolean winterBurstConditionApplyAndGameDateisBigWindate(@NotNull final GameEvent gameEvent) {
+    boolean winterBurstConditionApplyAndGameDateisBigWindate(@NonNull final GameEvent gameEvent) {
         return isWinterBurstConditionApply(gameEvent) && isBigWinWinterBurstGame(gameEvent);
     }
 
-    boolean isWinterBurstConditionApply(@NotNull final GameEvent gameEvent) {
+    boolean isWinterBurstConditionApply(@NonNull final GameEvent gameEvent) {
         var startDate = convertToLocalDate(winterburstConfiguration.getStartDate());
         var endDate = convertToLocalDate(winterburstConfiguration.getEndDate());
         var gameDate = convertToLocalDate(gameEvent.getDate());
@@ -74,7 +74,7 @@ public class BigGameFilterService {
     }
 
 
-    boolean isBigWinWinterBurstGame(@NotNull final GameEvent gameEvent) {
+    boolean isBigWinWinterBurstGame(@NonNull final GameEvent gameEvent) {
         return winterBustBigGamesDate.contains(gameEvent.getDate())
                 &&
                 gameEvent.getType().equals(winterburstConfiguration.getAllowedGameType());

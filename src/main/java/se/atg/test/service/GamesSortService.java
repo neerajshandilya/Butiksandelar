@@ -1,12 +1,13 @@
 package se.atg.test.service;
 
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import se.atg.test.dto.GameEvent;
 
-import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -26,8 +27,8 @@ public class GamesSortService {
     }
 
 
-    public String processGameList(@NotNull final List<GameEvent> games) {
-        final StringBuffer out = new StringBuffer();
+    public List<String> processGameList(@NonNull final List<GameEvent> games) {
+        List<String> proccessedList = new ArrayList<>();
         // key --> week_no , value --> GameEvents
         final MultiValueMap<Integer, GameEvent> weekNoGamesEventMap = new LinkedMultiValueMap<>();
         games.forEach(
@@ -41,15 +42,21 @@ public class GamesSortService {
                 weekNo -> {
                     var gameEvents = Optional.ofNullable(weekNoGamesEventMap.get(weekNo));
                     if (gameEvents.isPresent()) {
-                        processGamesListByWeek(gameEvents.get());
-                        weekService.createFormattedString(out, weekNo, gameEvents.get());
+                        var processGamesListByWeek = processGamesListByWeek(gameEvents.get());
+                        processGamesListByWeek.forEach(
+                                gameEvent ->
+                                {
+                                    var formattedString = weekService.createFormattedString(weekNo, gameEvent);
+                                    proccessedList.add(formattedString);
+                                }
+                        );
                     }
                 }
         );
-        return out.toString();
+        return proccessedList;
     }
 
-    private void processGamesListByWeek(@NotNull final List<GameEvent> sortedGamesList) {
+    private List<GameEvent> processGamesListByWeek(@NonNull final List<GameEvent> sortedGamesList) {
         //Step(1) Sort all games as per their event date
         sortedGamesList.sort(Comparator.comparing(GameEvent::getDate));
 
@@ -77,5 +84,6 @@ public class GamesSortService {
         }
         //Step(4) add BigGames to the index found to the sortedList
         sortedGamesList.addAll(indexToaddBigGameEvent, bigGamesList);
+        return sortedGamesList;
     }
 }

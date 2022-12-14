@@ -66,6 +66,11 @@ class WeekServiceTest {
         assertEquals(weekService.getWeekNumber(calendar.getTime()), 50);
     }
 
+    @Test
+    void testCreateFormattedString() {
+        assertEquals("V64(Monday w2)", weekService.createFormattedString(1, getWinterBustGameEvents("2022-12-19", "V64")));
+        assertEquals("V64(Monday)", weekService.createFormattedString(0, getWinterBustGameEvents("2022-12-19", "V64")));
+    }
 
     @Test
     void testGetWeekDiffFromTodayWeek() {

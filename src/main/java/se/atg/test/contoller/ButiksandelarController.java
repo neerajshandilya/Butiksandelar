@@ -1,17 +1,15 @@
 package se.atg.test.contoller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 import se.atg.test.dto.GameEvent;
 import se.atg.test.service.GamesSortService;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/")
 public class ButiksandelarController {
 
     final private GamesSortService gamesSortService;
@@ -21,13 +19,14 @@ public class ButiksandelarController {
         this.gamesSortService = gamesSortService;
     }
 
-    @RequestMapping(value = {"/"}, method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public String getStatus() {
         return "ok";
     }
 
-    @RequestMapping(value = {"/"}, method = RequestMethod.POST, consumes = {"application/json"}, produces = MediaType.TEXT_PLAIN_VALUE)
-    public String getStatus(@RequestBody List<GameEvent> games) {
+    @PostMapping
+    public List<String> getStatus(@RequestBody List<GameEvent> games) {
         return gamesSortService.processGameList(games);
     }
 

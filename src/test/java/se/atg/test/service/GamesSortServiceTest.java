@@ -13,6 +13,7 @@ import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -42,22 +43,8 @@ class GamesSortServiceTest {
         when(clock.instant()).thenReturn(
                 Instant.parse("2022-12-05T10:05:23.653Z"));
         var output = gamesSortService.processGameList(getGameDataSampleSet1());
-        assertEquals(
-                "V64(Monday)\n" +
-                        "V86(Wednesday)\n" +
-                        "V75(Saturday)\n" +
-                        "GS75(Sunday)\n" +
-                        "V64(Tuesday)\n" +
-                        "V64(Thursday)\n" +
-                        "V86(Friday)\n" +
-                        "V86(Wednesday w2)\n" +
-                        "V75(Saturday w2)\n" +
-                        "GS75(Sunday w2)\n" +
-                        "V64(Monday w2)\n" +
-                        "V64(Tuesday w2)\n" +
-                        "V64(Thursday w2)\n" +
-                        "GS75(Friday w2)\n", output);
-
+        var expected = Arrays.asList("V64(Monday)", "V86(Wednesday)", "V75(Saturday)", "GS75(Sunday)", "V64(Tuesday)", "V64(Thursday)", "V86(Friday)", "V86(Wednesday w2)", "V75(Saturday w2)", "GS75(Sunday w2)", "V64(Monday w2)", "V64(Tuesday w2)", "V64(Thursday w2)", "GS75(Friday w2)");
+        assertEquals(expected, output);
     }
 
 
@@ -66,20 +53,8 @@ class GamesSortServiceTest {
         when(clock.instant()).thenReturn(
                 Instant.parse("2022-12-06T00:00:00.653Z"));
         var output = gamesSortService.processGameList(getGameDataSampleSet1());
-        assertEquals(
-                "V64(Tuesday)\n" +
-                        "V86(Wednesday)\n" +
-                        "V75(Saturday)\n" +
-                        "GS75(Sunday)\n" +
-                        "V64(Thursday)\n" +
-                        "V86(Friday)\n" +
-                        "V86(Wednesday w2)\n" +
-                        "V75(Saturday w2)\n" +
-                        "GS75(Sunday w2)\n" +
-                        "V64(Monday w2)\n" +
-                        "V64(Tuesday w2)\n" +
-                        "V64(Thursday w2)\n" +
-                        "GS75(Friday w2)\n", output);
+        var expected = Arrays.asList("V64(Tuesday)", "V86(Wednesday)", "V75(Saturday)", "GS75(Sunday)", "V64(Thursday)", "V86(Friday)", "V86(Wednesday w2)", "V75(Saturday w2)", "GS75(Sunday w2)", "V64(Monday w2)", "V64(Tuesday w2)", "V64(Thursday w2)", "GS75(Friday w2)");
+        assertEquals(expected, output);
 
     }
 
@@ -88,19 +63,8 @@ class GamesSortServiceTest {
         when(clock.instant()).thenReturn(
                 Instant.parse("2022-12-07T00:00:00.653Z"));
         var output = gamesSortService.processGameList(getGameDataSampleSet1());
-        assertEquals(
-                "V86(Wednesday)\n" +
-                        "V75(Saturday)\n" +
-                        "GS75(Sunday)\n" +
-                        "V64(Thursday)\n" +
-                        "V86(Friday)\n" +
-                        "V86(Wednesday w2)\n" +
-                        "V75(Saturday w2)\n" +
-                        "GS75(Sunday w2)\n" +
-                        "V64(Monday w2)\n" +
-                        "V64(Tuesday w2)\n" +
-                        "V64(Thursday w2)\n" +
-                        "GS75(Friday w2)\n", output);
+        var expected = Arrays.asList("V86(Wednesday)", "V75(Saturday)", "GS75(Sunday)", "V64(Thursday)", "V86(Friday)", "V86(Wednesday w2)", "V75(Saturday w2)", "GS75(Sunday w2)", "V64(Monday w2)", "V64(Tuesday w2)", "V64(Thursday w2)", "GS75(Friday w2)");
+        assertEquals(expected, output);
 
     }
 
@@ -109,19 +73,8 @@ class GamesSortServiceTest {
         when(clock.instant()).thenReturn(
                 Instant.parse("2022-12-19T00:00:00.653Z"));
         var output = gamesSortService.processGameList(getGameDataSampleSet2());
-        assertEquals(
-                "V64(Monday)\n" +
-                        "V86(Wednesday)\n" +
-                        "V75(Friday)\n" +
-                        "V75(Sunday)\n" +
-                        "V64(Tuesday)\n" +
-                        "V64(Thursday)\n" +
-                        "V75(Monday w2)\n" +
-                        "V75(Saturday w2)\n" +
-                        "V75(Tuesday w2)\n" +
-                        "V75(Wednesday w2)\n" +
-                        "V75(Thursday w2)\n" +
-                        "V75(Friday w2)\n", output);
+        var expected = Arrays.asList("V64(Monday)", "V86(Wednesday)", "V75(Friday)", "V75(Sunday)", "V64(Tuesday)", "V64(Thursday)", "V75(Monday w2)", "V75(Saturday w2)", "V75(Tuesday w2)", "V75(Wednesday w2)", "V75(Thursday w2)", "V75(Friday w2)");
+        assertEquals(expected, output);
 
     }
 
@@ -130,18 +83,8 @@ class GamesSortServiceTest {
         when(clock.instant()).thenReturn(
                 Instant.parse("2022-12-20T00:00:00.653Z"));
         var output = gamesSortService.processGameList(getGameDataSampleSet2());
-        assertEquals(
-                "V64(Tuesday)\n" +
-                        "V86(Wednesday)\n" +
-                        "V75(Friday)\n" +
-                        "V75(Sunday)\n" +
-                        "V64(Thursday)\n" +
-                        "V75(Monday w2)\n" +
-                        "V75(Saturday w2)\n" +
-                        "V75(Tuesday w2)\n" +
-                        "V75(Wednesday w2)\n" +
-                        "V75(Thursday w2)\n" +
-                        "V75(Friday w2)\n", output);
+        var expected = Arrays.asList("V64(Tuesday)", "V86(Wednesday)", "V75(Friday)", "V75(Sunday)", "V64(Thursday)", "V75(Monday w2)", "V75(Saturday w2)", "V75(Tuesday w2)", "V75(Wednesday w2)", "V75(Thursday w2)", "V75(Friday w2)");
+        assertEquals(expected, output);
 
     }
 
@@ -150,16 +93,8 @@ class GamesSortServiceTest {
         when(clock.instant()).thenReturn(
                 Instant.parse("2022-12-22T00:00:00.653Z"));
         var output = gamesSortService.processGameList(getGameDataSampleSet2());
-        assertEquals(
-                "V64(Thursday)\n" +
-                        "V75(Friday)\n" +
-                        "V75(Sunday)\n" +
-                        "V75(Monday w2)\n" +
-                        "V75(Saturday w2)\n" +
-                        "V75(Tuesday w2)\n" +
-                        "V75(Wednesday w2)\n" +
-                        "V75(Thursday w2)\n" +
-                        "V75(Friday w2)\n", output);
+        var expected = Arrays.asList("V64(Thursday)", "V75(Friday)", "V75(Sunday)", "V75(Monday w2)", "V75(Saturday w2)", "V75(Tuesday w2)", "V75(Wednesday w2)", "V75(Thursday w2)", "V75(Friday w2)");
+        assertEquals(expected, output);
 
     }
 
@@ -168,15 +103,8 @@ class GamesSortServiceTest {
         when(clock.instant()).thenReturn(
                 Instant.parse("2022-12-23T00:00:00.653Z"));
         var output = gamesSortService.processGameList(getGameDataSampleSet2());
-        assertEquals(
-                "V75(Friday)\n" +
-                        "V75(Sunday)\n" +
-                        "V75(Monday w2)\n" +
-                        "V75(Saturday w2)\n" +
-                        "V75(Tuesday w2)\n" +
-                        "V75(Wednesday w2)\n" +
-                        "V75(Thursday w2)\n" +
-                        "V75(Friday w2)\n", output);
+        var expected = Arrays.asList("V75(Friday)", "V75(Sunday)", "V75(Monday w2)", "V75(Saturday w2)", "V75(Tuesday w2)", "V75(Wednesday w2)", "V75(Thursday w2)", "V75(Friday w2)");
+        assertEquals(expected, output);
 
     }
 
@@ -185,13 +113,8 @@ class GamesSortServiceTest {
         when(clock.instant()).thenReturn(
                 Instant.parse("2022-12-26T00:00:00.653Z"));
         var output = gamesSortService.processGameList(getGameDataSampleSet2());
-        assertEquals(
-                "V75(Monday)\n" +
-                        "V75(Saturday)\n" +
-                        "V75(Tuesday)\n" +
-                        "V75(Wednesday)\n" +
-                        "V75(Thursday)\n" +
-                        "V75(Friday)\n", output);
+        var expected = Arrays.asList("V75(Monday)", "V75(Saturday)", "V75(Tuesday)", "V75(Wednesday)", "V75(Thursday)", "V75(Friday)");
+        assertEquals(expected, output);
 
     }
 
@@ -200,12 +123,8 @@ class GamesSortServiceTest {
         when(clock.instant()).thenReturn(
                 Instant.parse("2022-12-27T00:00:00.653Z"));
         var output = gamesSortService.processGameList(getGameDataSampleSet2());
-        assertEquals(
-                "V75(Tuesday)\n" +
-                        "V75(Saturday)\n" +
-                        "V75(Wednesday)\n" +
-                        "V75(Thursday)\n" +
-                        "V75(Friday)\n", output);
+        var expected = Arrays.asList("V75(Tuesday)", "V75(Saturday)", "V75(Wednesday)", "V75(Thursday)", "V75(Friday)");
+        assertEquals(expected, output);
 
     }
 

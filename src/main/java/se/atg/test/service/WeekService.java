@@ -1,18 +1,17 @@
 package se.atg.test.service;
 
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.atg.test.dto.ApplicationProp;
 import se.atg.test.dto.GameEvent;
 
-import javax.validation.constraints.NotNull;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Clock;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 import java.util.Locale;
 
 @Component
@@ -28,7 +27,7 @@ public class WeekService {
     }
 
 
-    boolean isBigGameEventType(@NotNull final GameEvent gameEvent) {
+    boolean isBigGameEventType(@NonNull final GameEvent gameEvent) {
         var bigGameConfigurations = applicationProp.getBigGameConfigurations();
         final ApplicationProp.BigGameData bigGameData = new ApplicationProp.BigGameData();
         bigGameData.setType(gameEvent.getType());
@@ -40,29 +39,28 @@ public class WeekService {
         return Date.from(ZonedDateTime.now(clock).toInstant());
     }
 
-    void createFormattedString(@NotNull final StringBuffer out, int weekNo, @NotNull final List<GameEvent> sortedGamesList) {
-        sortedGamesList.forEach(game -> {
-            out.append(game.getType());
-            out.append("(");
-            out.append(getDayString(game.getDate()));
-            if (weekNo > 0)
-                out.append(" w").append(weekNo + 1);
-            out.append(")");
-            out.append("\n");
-        });
+    public String createFormattedString(int weekNo, final GameEvent gameEvent) {
+        final StringBuilder output = new StringBuilder();
+        output.append(gameEvent.getType());
+        output.append("(");
+        output.append(getDayString(gameEvent.getDate()));
+        if (weekNo > 0)
+            output.append(" w").append(weekNo + 1);
+        output.append(")");
+        return output.toString();
     }
 
-    String getDayString(@NotNull final Date date) {
+    String getDayString(@NonNull final Date date) {
         final DateFormat formatter = new SimpleDateFormat("EEEE", Locale.getDefault());
         return formatter.format(date);
     }
 
 
-    int getWeekNumber(@NotNull final GameEvent gameEvent) {
+    int getWeekNumber(@NonNull final GameEvent gameEvent) {
         return getWeekNumber(gameEvent.getDate());
     }
 
-    int getWeekNumber(@NotNull final Date inputDate) {
+    int getWeekNumber(@NonNull final Date inputDate) {
         final GregorianCalendar calendar = new GregorianCalendar();
         calendar.setFirstDayOfWeek(GregorianCalendar.MONDAY);
         calendar.setMinimalDaysInFirstWeek(7);
@@ -73,4 +71,6 @@ public class WeekService {
     int getWeekDiffFromTodayWeek(final GameEvent game) {
         return getWeekNumber(game) - getWeekNumber(getTodayDate());
     }
+
+
 }
