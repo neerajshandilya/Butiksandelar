@@ -1,5 +1,6 @@
 package se.atg.test.contoller;
 
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +52,9 @@ public class ButiksandelarControllerTest {
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(2))))
-                .andDo(print());
+                .andExpect(jsonPath("$[0]", Matchers.equalTo("V64(Monday)")))
+                .andExpect(jsonPath("$[1]", Matchers.equalTo("V64(Thursday)")));
+        // .andDo(print());
     }
 
     @Test
@@ -84,6 +87,7 @@ public class ButiksandelarControllerTest {
     public void givenMissingGamesEventData_thenStatus400() throws Exception {
         mvc.perform(post("/")
                         .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.detail", Matchers.equalTo("Failed to read request")))
                 .andExpect(status().isBadRequest()).andDo(print());
     }
 }
