@@ -18,4 +18,8 @@ public class Utils {
         LocalDate localDate = LocalDate.parse(dateToConvert);
         return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
+
+    public static LocalDate convertStringToLocalDate(@NonNull final String dateToConvert) {
+        return convertToLocalDate(convertStringToDate(dateToConvert));
+    }
 }

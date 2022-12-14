@@ -7,8 +7,8 @@ import se.atg.test.dto.ApplicationProp;
 import se.atg.test.dto.GameEvent;
 import se.atg.test.util.Utils;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,7 +21,7 @@ public class BigGameFilterService {
 
     private final ApplicationProp.WinterburstConfiguration winterburstConfiguration;
 
-    private final List<Date> winterBustBigGamesDate;
+    private final List<LocalDate> winterBustBigGamesDate;
 
 
     @Autowired
@@ -31,7 +31,7 @@ public class BigGameFilterService {
         winterBustBigGamesDate = winterburstConfiguration
                 .getBigGameDates()
                 .stream()
-                .map(Utils::convertStringToDate)
+                .map(Utils::convertStringToLocalDate)
                 .collect(Collectors.toList());
     }
 
@@ -75,7 +75,7 @@ public class BigGameFilterService {
 
 
     boolean isBigWinWinterBurstGame(@NonNull final GameEvent gameEvent) {
-        return winterBustBigGamesDate.contains(gameEvent.getDate())
+        return winterBustBigGamesDate.contains(convertToLocalDate(gameEvent.getDate()))
                 &&
                 gameEvent.getType().equals(winterburstConfiguration.getAllowedGameType());
     }
