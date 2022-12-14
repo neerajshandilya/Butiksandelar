@@ -28,7 +28,7 @@ public class GamesSortService {
 
 
     public List<String> processGameList(@NonNull final List<GameEvent> games) {
-        List<String> proccessedList = new ArrayList<>();
+        final List<String> processedList = new ArrayList<>();
         // key --> week_no , value --> GameEvents
         final MultiValueMap<Integer, GameEvent> weekNoGamesEventMap = new LinkedMultiValueMap<>();
         games.forEach(
@@ -47,13 +47,13 @@ public class GamesSortService {
                                 gameEvent ->
                                 {
                                     var formattedString = weekService.createFormattedString(weekNo, gameEvent);
-                                    proccessedList.add(formattedString);
+                                    processedList.add(formattedString);
                                 }
                         );
                     }
                 }
         );
-        return proccessedList;
+        return processedList;
     }
 
     private List<GameEvent> processGamesListByWeek(@NonNull final List<GameEvent> sortedGamesList) {
