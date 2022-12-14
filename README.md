@@ -4,15 +4,21 @@ ATG Test Project
 
 ### Task
 
-Create a **Spring Boot service**, that can take an arbitrary list of games as input (JSON), and produce a sorted list of
-games (JSON), described above.
-The JDK version used shall be **11**.
-We do not want to hardcode the "big" types/dates so this shall be configurable at service-startup.
-The functionality of the service shall be covered by JUnit 5 tests. The line coverage should be at, or over, 80% for
-each file.
-The service shall be built as a "fat-jar" using Maven.
-When/if using third-party dependencies, those shall be well-proven and considered to be standard within the industry.
-The code shall be self-explanatory, clear and easy to understand. Document the code only when needed to achieve this.
+* Create a **Spring Boot service**, that can take an arbitrary list of games as input (JSON), and produce a sorted list
+  of
+  games (JSON), described above.
+* The JDK version used shall be **11**.
+* We do not want to hardcode the "big" types/dates so this shall be configurable at service-startup.
+* The functionality of the service shall be covered by JUnit 5 tests. The line coverage should be at, or over, 80% for
+  each file.
+* The service shall be built as a "fat-jar" using Maven.
+* When/if using third-party dependencies, those shall be well-proven and considered to be standard within the industry.
+* The code shall be self-explanatory, clear and easy to understand. Document the code only when needed to achieve this.
+
+##### Assumption during implementation
+
+* if the input JSON has the Game start date is in the past then we discard that input.
+* during winterbust condition if input JSON has incorrect game type or game free day then we discard that input as well.
 
 ### Information
 

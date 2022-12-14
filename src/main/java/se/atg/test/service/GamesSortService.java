@@ -70,7 +70,7 @@ public class GamesSortService {
         bigGamesList.sort(Comparator.comparing(GameEvent::getDate));
         java.util.ListIterator<GameEvent> gameEventListIterator = sortedGamesList.listIterator();
 
-        int indexToaddBigGameEvent = 0; //Index where big games event should be added
+        int indexToAddBigGameEvent = 0; //Index where big games event should be added
         while (gameEventListIterator.hasNext()) {
             var gameEvent = gameEventListIterator.next();
             var todayLocalDate = convertToLocalDate(weekService.getTodayDate());
@@ -78,15 +78,15 @@ public class GamesSortService {
             if (gameEventLocalDate.isBefore(todayLocalDate)) {
                 gameEventListIterator.remove();
             } else if (gameEventLocalDate.isEqual(todayLocalDate)) {
-                indexToaddBigGameEvent = sortedGamesList.indexOf(gameEvent) + 1;
+                indexToAddBigGameEvent = sortedGamesList.indexOf(gameEvent) + 1;
                 break;
             } else if (gameEventLocalDate.isAfter(todayLocalDate)) {
-                indexToaddBigGameEvent = sortedGamesList.indexOf(gameEvent);
+                indexToAddBigGameEvent = sortedGamesList.indexOf(gameEvent);
                 break;
             }
         }
         //Step(4) add BigGames to the index found to the sortedList
-        sortedGamesList.addAll(indexToaddBigGameEvent, bigGamesList);
+        sortedGamesList.addAll(indexToAddBigGameEvent, bigGamesList);
         return sortedGamesList;
     }
 }

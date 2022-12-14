@@ -13,13 +13,13 @@ import static se.atg.test.util.Utils.convertToLocalDate;
 
 @Component("gameEventValidator")
 @Slf4j
-public class GameEventValidatorService implements Validator {
+public class GameEventValidator implements Validator {
 
     private final WeekService weekService;
     private final BigGameFilterService bigGameFilterService;
 
     @Autowired
-    public GameEventValidatorService(WeekService weekService, BigGameFilterService bigGameFilterService) {
+    public GameEventValidator(WeekService weekService, BigGameFilterService bigGameFilterService) {
         super();
         this.weekService = weekService;
         this.bigGameFilterService = bigGameFilterService;
@@ -49,7 +49,6 @@ public class GameEventValidatorService implements Validator {
                     gameEventListIterator.remove();
                     // errors.rejectValue("gameType", "During winterBurstGame allowed game not matching" + gameEvent.getName());
                 }
-
             }
         }
     }
