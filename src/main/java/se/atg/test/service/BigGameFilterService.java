@@ -1,6 +1,7 @@
 package se.atg.test.service;
 
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.atg.test.dto.ApplicationProp;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 import static se.atg.test.util.Utils.convertToLocalDate;
 
 @Service
+@Slf4j
 public class BigGameFilterService {
 
     private final WeekService weekService;

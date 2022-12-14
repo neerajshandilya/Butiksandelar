@@ -1,6 +1,7 @@
 package se.atg.test.service;
 
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.atg.test.dto.ApplicationProp;
@@ -15,6 +16,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 @Component
+@Slf4j
 public class WeekService {
 
     private final ApplicationProp applicationProp;

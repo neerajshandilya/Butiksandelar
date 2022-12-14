@@ -1,6 +1,7 @@
 package se.atg.test.service;
 
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -16,6 +17,7 @@ import static se.atg.test.util.Utils.convertToLocalDate;
 
 
 @Service
+@Slf4j
 public class GamesSortService {
     private final WeekService weekService;
     private final BigGameFilterService bigGameFilterService;
