@@ -17,8 +17,10 @@ ATG Test Project
 
 ##### Assumption during implementation
 
-* if the input JSON has the Game start date is in the past then we discard that input.
-* during winterbust condition if input JSON has incorrect game type or game free day then we discard that input as well.
+* if the input JSON has a Game data which start date is in the past then we discard that input silently.
+* during winterbust period if input JSON has incorrect game type(means other then allowed type) will discard that input
+  as well.
+* if the input JSON has a Game data which start date is game free day that will discard that input as well.
 
 ### Information
 
