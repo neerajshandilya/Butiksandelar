@@ -14,9 +14,7 @@ import java.util.List;
 @ConfigurationProperties(prefix = "application")
 public class ApplicationProp {
     private List<BigGameData> bigGameConfigurations;
-
     private WinterburstConfiguration winterburstConfiguration;
-
     private String dateFormat;
 
 
