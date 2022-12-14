@@ -1,4 +1,4 @@
-package se.atg.test.contoller;
+package se.atg.test.contoller.exceptionhandler;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
