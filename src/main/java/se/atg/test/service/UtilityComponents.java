@@ -12,7 +12,7 @@ public class UtilityComponents {
 
     @Bean
     public Clock clock() {
-       /* return Clock.fixed(
+        /*return Clock.fixed(
                 Instant.parse("2022-12-12T10:05:23.653Z"),
                 ZoneId.of("Europe/Prague"));*/
         return Clock.systemDefaultZone();

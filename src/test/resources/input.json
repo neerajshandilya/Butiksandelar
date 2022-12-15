@@ -1,0 +1,72 @@
+[
+  {
+    "name": "Monday: V64",
+    "type": "V64",
+    "start": "2022-12-12T09:30:00"
+  },
+  {
+    "name": "Tuesday: V64",
+    "type": "V64",
+    "start": "2022-12-13T09:30:00"
+  },
+  {
+    "name": "Wednesday: V86",
+    "type": "V86",
+    "start": "2022-12-14T09:30:00"
+  },
+  {
+    "name": "Thursday: V64",
+    "type": "V64",
+    "start": "2022-12-15T09:30:00"
+  },
+  {
+    "name": "Friday: V86",
+    "type": "V86",
+    "start": "2022-12-16T09:30:00"
+  },
+  {
+    "name": "Saturday: V75",
+    "type": "V75",
+    "start": "2022-12-17T09:30:00"
+  },
+  {
+    "name": "Sunday: GS75",
+    "type": "GS75",
+    "start": "2022-12-18T09:30:00"
+  },
+  {
+    "name": "Monday: V64",
+    "type": "V64",
+    "start": "2022-12-19T09:30:00"
+  },
+  {
+    "name": "Tuesday: V64",
+    "type": "V64",
+    "start": "2022-12-20T09:30:00"
+  },
+  {
+    "name": "Wednesday: V86",
+    "type": "V86",
+    "start": "2022-12-21T09:30:00"
+  },
+  {
+    "name": "Thursday: V64",
+    "type": "V64",
+    "start": "2022-12-22T09:30:00"
+  },
+  {
+    "name": "Friday: GS75",
+    "type": "GS75",
+    "start": "2022-12-23T09:30:00"
+  },
+  {
+    "name": "Saturday: V75",
+    "type": "V75",
+    "start": "2022-12-24T09:30:00"
+  },
+  {
+    "name": "Sunday: GS75",
+    "type": "GS75",
+    "start": "2022-12-25T09:30:00"
+  }
+]
