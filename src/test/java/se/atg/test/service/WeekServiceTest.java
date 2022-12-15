@@ -17,8 +17,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
+import static se.atg.test.util.TestUtils.createGameEvents;
 import static se.atg.test.util.TestUtils.getCalendarForagivenFixDate;
-import static se.atg.test.util.TestUtils.getWinterBustGameEvents;
 import static se.atg.test.util.Utils.convertStringToDate;
 import static se.atg.test.util.Utils.convertToLocalDate;
 
@@ -53,36 +53,36 @@ class WeekServiceTest {
     @Test
     void testGetDayString() {
         Calendar calendar = getCalendarForagivenFixDate();
-        assertEquals(weekService.getDayString(calendar.getTime()), "Monday");
+        assertEquals("Monday", weekService.getDayString(calendar.getTime()));
     }
 
     @Test
     void testGetWeekNumber() {
         Calendar calendar = getCalendarForagivenFixDate();
-        assertEquals(weekService.getWeekNumber(calendar.getTime()), 50);
+        assertEquals(50, weekService.getWeekNumber(calendar.getTime()));
     }
 
     @Test
     void testCreateFormattedString() {
-        assertEquals("V64(Monday w2)", weekService.createFormattedString(1, getWinterBustGameEvents("2022-12-19", "V64")));
-        assertEquals("V64(Monday)", weekService.createFormattedString(0, getWinterBustGameEvents("2022-12-19", "V64")));
+        assertEquals("V64(Monday w2)", weekService.createFormattedString(1, createGameEvents("2022-12-19", "V64")));
+        assertEquals("V64(Monday)", weekService.createFormattedString(0, createGameEvents("2022-12-19", "V64")));
     }
 
     @Test
     void testGetWeekDiffFromTodayWeek() {
-        var winterBustGameEvents = getWinterBustGameEvents("2022-12-12", "V76");
-        assertEquals(weekService.getWeekDiffFromTodayWeek(winterBustGameEvents), 0);
-        winterBustGameEvents = getWinterBustGameEvents("2022-12-19", "V76");
-        assertEquals(weekService.getWeekDiffFromTodayWeek(winterBustGameEvents), 1);
-        winterBustGameEvents = getWinterBustGameEvents("2022-12-18", "V76");
-        assertEquals(weekService.getWeekDiffFromTodayWeek(winterBustGameEvents), 0);
+        var winterBustGameEvents = createGameEvents("2022-12-12", "V76");
+        assertEquals(0, weekService.getWeekDiffFromTodayWeek(winterBustGameEvents));
+        winterBustGameEvents = createGameEvents("2022-12-19", "V76");
+        assertEquals(1, weekService.getWeekDiffFromTodayWeek(winterBustGameEvents));
+        winterBustGameEvents = createGameEvents("2022-12-18", "V76");
+        assertEquals(0, weekService.getWeekDiffFromTodayWeek(winterBustGameEvents));
     }
 
     @Test
     void testIsBigGameEventType() {
-        var winterBustGameEvents = getWinterBustGameEvents("2022-12-12", "V76");
+        var winterBustGameEvents = createGameEvents("2022-12-12", "V76");
         assertFalse(weekService.isBigGameEventType(winterBustGameEvents));
-        winterBustGameEvents = getWinterBustGameEvents("2022-12-14", "V86");
+        winterBustGameEvents = createGameEvents("2022-12-14", "V86");
         assertTrue(weekService.isBigGameEventType(winterBustGameEvents));
     }
 

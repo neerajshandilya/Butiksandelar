@@ -39,7 +39,7 @@ public class ButiksandelarController {
     public List<String> getStatus(@RequestBody @Validated List<GameEvent> inputGamesList) {
         final List<GameEvent> processGamesList = new ArrayList<>(inputGamesList);
         validator.validate(processGamesList, null);
-        return gamesSortService.processGameList(processGamesList);
+        return gamesSortService.sortGamesList(processGamesList);
     }
 
 

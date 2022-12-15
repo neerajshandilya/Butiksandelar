@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static se.atg.test.util.TestUtils.getWinterBustGameEvents;
+import static se.atg.test.util.TestUtils.createGameEvents;
 
 @SpringBootTest(classes = {ButiksandelarApplication.class, FixedClockConfig.class})
 @RunWith(SpringRunner.class)
@@ -25,7 +25,7 @@ class BigGameFilterServiceTest {
 
 
     @Test
-    public void filterBigGameEventTestWithEmptyGameList() {
+    void filterBigGameEventTestWithEmptyGameList() {
         var gameEvents = bigGameFilterService.filterBigGameEvent(Collections.emptyList());
         assertNotNull(gameEvents);
         assertEquals(0, gameEvents.size());
@@ -33,29 +33,29 @@ class BigGameFilterServiceTest {
 
 
     @Test
-    public void filterBigGameEventTestWithWinterGamesList() {
+    void filterBigGameEventTestWithWinterGamesList() {
         List<GameEvent> winterBustGameList = new ArrayList<>();
-        winterBustGameList.add(getWinterBustGameEvents("2022-12-23", "V75"));
-        winterBustGameList.add(getWinterBustGameEvents("2022-12-23", "V76"));
-        winterBustGameList.add(getWinterBustGameEvents("2022-12-24", "V75"));
-        winterBustGameList.add(getWinterBustGameEvents("2022-12-25", "V75"));
-        winterBustGameList.add(getWinterBustGameEvents("2022-12-26", "V75"));
-        winterBustGameList.add(getWinterBustGameEvents("2022-12-31", "V75"));
+        winterBustGameList.add(createGameEvents("2022-12-23", "V75"));
+        winterBustGameList.add(createGameEvents("2022-12-23", "V76"));
+        winterBustGameList.add(createGameEvents("2022-12-24", "V75"));
+        winterBustGameList.add(createGameEvents("2022-12-25", "V75"));
+        winterBustGameList.add(createGameEvents("2022-12-26", "V75"));
+        winterBustGameList.add(createGameEvents("2022-12-31", "V75"));
 
         var gameEvents = bigGameFilterService.filterBigGameEvent(winterBustGameList);
         assertEquals(4, gameEvents.size());
     }
 
     @Test
-    public void filterBigGameEventTestWithOutWinterGamesList() {
+    void filterBigGameEventTestWithOutWinterGamesList() {
         List<GameEvent> winterBustGameList = new ArrayList<>();
-        winterBustGameList.add(getWinterBustGameEvents("2022-12-12", "V75"));
-        winterBustGameList.add(getWinterBustGameEvents("2022-12-13", "V76"));
-        winterBustGameList.add(getWinterBustGameEvents("2022-12-14", "V86"));
-        winterBustGameList.add(getWinterBustGameEvents("2022-12-15", "V75"));
-        winterBustGameList.add(getWinterBustGameEvents("2022-12-16", "V75"));
-        winterBustGameList.add(getWinterBustGameEvents("2022-12-17", "V75"));
-        winterBustGameList.add(getWinterBustGameEvents("2022-12-18", "GS75"));
+        winterBustGameList.add(createGameEvents("2022-12-12", "V75"));
+        winterBustGameList.add(createGameEvents("2022-12-13", "V76"));
+        winterBustGameList.add(createGameEvents("2022-12-14", "V86"));
+        winterBustGameList.add(createGameEvents("2022-12-15", "V75"));
+        winterBustGameList.add(createGameEvents("2022-12-16", "V75"));
+        winterBustGameList.add(createGameEvents("2022-12-17", "V75"));
+        winterBustGameList.add(createGameEvents("2022-12-18", "GS75"));
 
         var gameEvents = bigGameFilterService.filterBigGameEvent(winterBustGameList);
         assertEquals(3, gameEvents.size());
@@ -63,40 +63,40 @@ class BigGameFilterServiceTest {
 
 
     @Test
-    public void isBigWinWinterBurstGameTest() {
-        assertTrue(bigGameFilterService.isBigWinWinterBurstGame(getWinterBustGameEvents("2022-12-23", "V75")));
-        assertFalse(bigGameFilterService.isBigWinWinterBurstGame(getWinterBustGameEvents("2022-12-24", "V75")));
-        assertTrue(bigGameFilterService.isBigWinWinterBurstGame(getWinterBustGameEvents("2022-12-25", "V75")));
-        assertTrue(bigGameFilterService.isBigWinWinterBurstGame(getWinterBustGameEvents("2022-12-26", "V75")));
-        assertFalse(bigGameFilterService.isBigWinWinterBurstGame(getWinterBustGameEvents("2022-12-27", "V75")));
-        assertFalse(bigGameFilterService.isBigWinWinterBurstGame(getWinterBustGameEvents("2022-12-28", "V75")));
-        assertFalse(bigGameFilterService.isBigWinWinterBurstGame(getWinterBustGameEvents("2022-12-29", "V75")));
-        assertFalse(bigGameFilterService.isBigWinWinterBurstGame(getWinterBustGameEvents("2022-12-30", "V75")));
-        assertTrue(bigGameFilterService.isBigWinWinterBurstGame(getWinterBustGameEvents("2022-12-31", "V75")));
-        assertFalse(bigGameFilterService.isBigWinWinterBurstGame(getWinterBustGameEvents("2022-12-31", "V76")));
+    void isBigWinWinterBurstGameTest() {
+        assertTrue(bigGameFilterService.isBigWinWinterBurstGame(createGameEvents("2022-12-23", "V75")));
+        assertFalse(bigGameFilterService.isBigWinWinterBurstGame(createGameEvents("2022-12-24", "V75")));
+        assertTrue(bigGameFilterService.isBigWinWinterBurstGame(createGameEvents("2022-12-25", "V75")));
+        assertTrue(bigGameFilterService.isBigWinWinterBurstGame(createGameEvents("2022-12-26", "V75")));
+        assertFalse(bigGameFilterService.isBigWinWinterBurstGame(createGameEvents("2022-12-27", "V75")));
+        assertFalse(bigGameFilterService.isBigWinWinterBurstGame(createGameEvents("2022-12-28", "V75")));
+        assertFalse(bigGameFilterService.isBigWinWinterBurstGame(createGameEvents("2022-12-29", "V75")));
+        assertFalse(bigGameFilterService.isBigWinWinterBurstGame(createGameEvents("2022-12-30", "V75")));
+        assertTrue(bigGameFilterService.isBigWinWinterBurstGame(createGameEvents("2022-12-31", "V75")));
+        assertFalse(bigGameFilterService.isBigWinWinterBurstGame(createGameEvents("2022-12-31", "V76")));
     }
 
 
     @Test
-    public void isWinterBurstConditionApplyTest() {
-        assertTrue(bigGameFilterService.isWinterBurstConditionApply(getWinterBustGameEvents("2022-12-23", "V75")));
-        assertTrue(bigGameFilterService.isWinterBurstConditionApply(getWinterBustGameEvents("2022-12-25", "V75")));
-        assertTrue(bigGameFilterService.isWinterBurstConditionApply(getWinterBustGameEvents("2022-12-28", "V75")));
-        assertTrue(bigGameFilterService.isWinterBurstConditionApply(getWinterBustGameEvents("2022-12-30", "V75")));
-        assertTrue(bigGameFilterService.isWinterBurstConditionApply(getWinterBustGameEvents("2022-12-31", "V75")));
-        assertFalse(bigGameFilterService.isWinterBurstConditionApply(getWinterBustGameEvents("2022-12-22", "V75")));
+    void isWinterBurstConditionApplyTest() {
+        assertTrue(bigGameFilterService.isWinterBurstConditionApply(createGameEvents("2022-12-23", "V75")));
+        assertTrue(bigGameFilterService.isWinterBurstConditionApply(createGameEvents("2022-12-25", "V75")));
+        assertTrue(bigGameFilterService.isWinterBurstConditionApply(createGameEvents("2022-12-28", "V75")));
+        assertTrue(bigGameFilterService.isWinterBurstConditionApply(createGameEvents("2022-12-30", "V75")));
+        assertTrue(bigGameFilterService.isWinterBurstConditionApply(createGameEvents("2022-12-31", "V75")));
+        assertFalse(bigGameFilterService.isWinterBurstConditionApply(createGameEvents("2022-12-22", "V75")));
     }
 
     @Test
-    public void winterBurstConditionApplyAndGameDateisBigWindateTest() {
-        assertTrue(bigGameFilterService.winterBurstConditionApplyAndGameDateisBigWindate(getWinterBustGameEvents("2022-12-23", "V75")));
-        assertTrue(bigGameFilterService.winterBurstConditionApplyAndGameDateisBigWindate(getWinterBustGameEvents("2022-12-25", "V75")));
-        assertFalse(bigGameFilterService.winterBurstConditionApplyAndGameDateisBigWindate(getWinterBustGameEvents("2022-12-23", "V76")));
-        assertFalse(bigGameFilterService.winterBurstConditionApplyAndGameDateisBigWindate(getWinterBustGameEvents("2022-12-24", "V75")));
-        assertTrue(bigGameFilterService.winterBurstConditionApplyAndGameDateisBigWindate(getWinterBustGameEvents("2022-12-26", "V75")));
-        assertTrue(bigGameFilterService.winterBurstConditionApplyAndGameDateisBigWindate(getWinterBustGameEvents("2022-12-31", "V75")));
-        assertFalse(bigGameFilterService.winterBurstConditionApplyAndGameDateisBigWindate(getWinterBustGameEvents("2022-12-31", "V70")));
-        assertFalse(bigGameFilterService.winterBurstConditionApplyAndGameDateisBigWindate(getWinterBustGameEvents("2022-12-27", "V75")));
+    void winterBurstConditionApplyAndGameDateisBigWindateTest() {
+        assertTrue(bigGameFilterService.winterBurstConditionApplyAndGameDateisBigWindate(createGameEvents("2022-12-23", "V75")));
+        assertTrue(bigGameFilterService.winterBurstConditionApplyAndGameDateisBigWindate(createGameEvents("2022-12-25", "V75")));
+        assertFalse(bigGameFilterService.winterBurstConditionApplyAndGameDateisBigWindate(createGameEvents("2022-12-23", "V76")));
+        assertFalse(bigGameFilterService.winterBurstConditionApplyAndGameDateisBigWindate(createGameEvents("2022-12-24", "V75")));
+        assertTrue(bigGameFilterService.winterBurstConditionApplyAndGameDateisBigWindate(createGameEvents("2022-12-26", "V75")));
+        assertTrue(bigGameFilterService.winterBurstConditionApplyAndGameDateisBigWindate(createGameEvents("2022-12-31", "V75")));
+        assertFalse(bigGameFilterService.winterBurstConditionApplyAndGameDateisBigWindate(createGameEvents("2022-12-31", "V70")));
+        assertFalse(bigGameFilterService.winterBurstConditionApplyAndGameDateisBigWindate(createGameEvents("2022-12-27", "V75")));
     }
 
 

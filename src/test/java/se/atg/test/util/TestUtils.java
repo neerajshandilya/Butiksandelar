@@ -9,7 +9,7 @@ import java.util.Date;
 
 public class TestUtils {
 
-    public static GameEvent getWinterBustGameEvents(final String date, final String type) {
+    public static GameEvent createGameEvents(final String date, final String type) {
         GameEvent gameEvent = new GameEvent();
         gameEvent.setName("Junit_Winter_Burst_Game");
         gameEvent.setType(type);

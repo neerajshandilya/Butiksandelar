@@ -11,7 +11,8 @@ import se.atg.test.dto.GameEvent;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static se.atg.test.util.Utils.convertToLocalDate;
 
@@ -30,40 +31,30 @@ public class GamesSortService {
     }
 
 
-    public List<String> processGameList(@NonNull final List<GameEvent> inputGamesList) {
+    public List<String> sortGamesList(@NonNull final List<GameEvent> inputGamesList) {
         final List<GameEvent> processGamesList = new ArrayList<>(inputGamesList);
         final List<String> processedList = new ArrayList<>();
         // key --> week_no , value --> GameEvents
         final MultiValueMap<Integer, GameEvent> weekNoGamesEventMap = new LinkedMultiValueMap<>();
-        processGamesList.forEach(
-                game -> {
-                    var diff = weekService.getWeekDiffFromTodayWeek(game);
-                    weekNoGamesEventMap.add(diff, game);
-                }
-        );
+        for (GameEvent game : processGamesList)
+            weekNoGamesEventMap.add(weekService.getWeekDiffFromTodayWeek(game), game);
 
-        weekNoGamesEventMap.keySet().forEach(
-                weekNo -> {
-                    var gameEvents = Optional.ofNullable(weekNoGamesEventMap.get(weekNo));
-                    if (gameEvents.isPresent()) {
-                        var processGamesListByWeek = processGamesListByWeek(gameEvents.get());
-                        processGamesListByWeek.forEach(
-                                gameEvent ->
-                                {
-                                    var formattedString = weekService.createFormattedString(weekNo, gameEvent);
-                                    processedList.add(formattedString);
-                                }
-                        );
-                    }
-                }
-        );
+        for (Map.Entry<Integer, List<GameEvent>> entry : weekNoGamesEventMap.entrySet()) {
+            for (GameEvent gameEvent : sortGamesListWeekly(entry.getValue())) {
+                processedList.add(weekService.createFormattedString(entry.getKey(), gameEvent));
+            }
+        }
+
         return processedList;
     }
 
-    private List<GameEvent> processGamesListByWeek(@NonNull final List<GameEvent> inputGamesList) {
-        final List<GameEvent> processGamesList = new ArrayList<>(inputGamesList);
-        //Step(1) Sort all games as per their event date
-        processGamesList.sort(Comparator.comparing(GameEvent::getDate));
+    private List<GameEvent> sortGamesListWeekly(@NonNull final List<GameEvent> inputGamesList) {
+        //Step(1) Sort all games as per their event date & discard any game that has event date in past
+        final List<GameEvent> processGamesList = inputGamesList
+                .stream()
+                .sorted(Comparator.comparing(GameEvent::getDate))
+                .filter(this::gameDateAreInFuture)
+                .collect(Collectors.toList());
 
         //Step(2) Identify & Filter BigGame events from above sorted List
         final List<GameEvent> bigGamesList = bigGameFilterService.filterBigGameEvent(processGamesList);
@@ -71,25 +62,23 @@ public class GamesSortService {
 
         //Step(3) Sort Big games according to their date
         bigGamesList.sort(Comparator.comparing(GameEvent::getDate));
-        java.util.ListIterator<GameEvent> gameEventListIterator = processGamesList.listIterator();
+        int indexToAddBigGameEvent = !processGamesList.isEmpty() ? findIndexToAddBigGameEvent(processGamesList.get(0)) : 0;
 
-        int indexToAddBigGameEvent = 0; //Index where big games event should be added
-        while (gameEventListIterator.hasNext()) {
-            var gameEvent = gameEventListIterator.next();
-            var todayLocalDate = convertToLocalDate(weekService.getTodayDate());
-            var gameEventLocalDate = convertToLocalDate(gameEvent.getDate());
-            if (gameEventLocalDate.isBefore(todayLocalDate)) {
-                gameEventListIterator.remove();
-            } else if (gameEventLocalDate.isEqual(todayLocalDate)) {
-                indexToAddBigGameEvent = processGamesList.indexOf(gameEvent) + 1;
-                break;
-            } else if (gameEventLocalDate.isAfter(todayLocalDate)) {
-                indexToAddBigGameEvent = processGamesList.indexOf(gameEvent);
-                break;
-            }
-        }
         //Step(4) add BigGames to the index found to the sortedList
         processGamesList.addAll(indexToAddBigGameEvent, bigGamesList);
         return processGamesList;
+    }
+
+    int findIndexToAddBigGameEvent(final GameEvent gameEvent) {
+        var todayLocalDate = convertToLocalDate(weekService.getTodayDate());
+        var gameEventLocalDate = convertToLocalDate(gameEvent.getDate());
+        return (gameEventLocalDate.isEqual(todayLocalDate)) ? 1 : 0;
+    }
+
+
+    boolean gameDateAreInFuture(final GameEvent gameEvent) {
+        var todayLocalDate = convertToLocalDate(weekService.getTodayDate());
+        var gameEventLocalDate = convertToLocalDate(gameEvent.getDate());
+        return gameEventLocalDate.isEqual(todayLocalDate) || gameEventLocalDate.isAfter(todayLocalDate);
     }
 }
