@@ -61,11 +61,12 @@ public class GamesSortService {
 
         //Step(2) Identify & Filter BigGame events from above sorted List
         final List<GameEvent> bigGamesList = bigGameFilterService.filterBigGameEvent(processGamesList);
+        log.debug("filtered List of big games after processing processGamesList {} with a size of {}", bigGamesList, bigGamesList.size());
         processGamesList.removeAll(bigGamesList);
 
         //Step(3) find the index where sorted Big games can be added
         int indexToAddBigGameEvent = !processGamesList.isEmpty() ? findIndexToAddBigGameEvent(processGamesList.get(0)) : 0;
-
+        log.trace("indexToAddBigGameEvent value is  {}", indexToAddBigGameEvent);
         //Step(4) add BigGames to the index found to the sortedList
         processGamesList.addAll(indexToAddBigGameEvent, bigGamesList);
         log.debug("sortGamesListWeekly after processing gamesList {} with a size of {}", processGamesList, processGamesList.size());
