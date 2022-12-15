@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static se.atg.test.util.Utils.convertToLocalDate;
 
@@ -32,7 +31,13 @@ public class GamesSortService {
 
 
     public List<String> sortGamesList(@NonNull final List<GameEvent> inputGamesList) {
-        final List<GameEvent> processGamesList = new ArrayList<>(inputGamesList);
+        //Step(0) Sort all games as per their event date & discard any game that has event date in past
+        final List<GameEvent> processGamesList = inputGamesList
+                .stream()
+                .sorted(Comparator.comparing(GameEvent::getDate))
+                .filter(this::gameDateAreInFuture)
+                .toList();
+
         final List<String> processedList = new ArrayList<>();
         // key --> week_no , value --> GameEvents
         final MultiValueMap<Integer, GameEvent> weekNoGamesEventMap = new LinkedMultiValueMap<>();
@@ -49,19 +54,14 @@ public class GamesSortService {
     }
 
     private List<GameEvent> sortGamesListWeekly(@NonNull final List<GameEvent> inputGamesList) {
-        //Step(1) Sort all games as per their event date & discard any game that has event date in past
-        final List<GameEvent> processGamesList = inputGamesList
-                .stream()
-                .sorted(Comparator.comparing(GameEvent::getDate))
-                .filter(this::gameDateAreInFuture)
-                .collect(Collectors.toList());
+        //Step(1) create a processing List from input
+        final List<GameEvent> processGamesList = new ArrayList<>(inputGamesList);
 
         //Step(2) Identify & Filter BigGame events from above sorted List
         final List<GameEvent> bigGamesList = bigGameFilterService.filterBigGameEvent(processGamesList);
         processGamesList.removeAll(bigGamesList);
 
-        //Step(3) Sort Big games according to their date
-        bigGamesList.sort(Comparator.comparing(GameEvent::getDate));
+        //Step(3) find the index where sorted Big games can be added
         int indexToAddBigGameEvent = !processGamesList.isEmpty() ? findIndexToAddBigGameEvent(processGamesList.get(0)) : 0;
 
         //Step(4) add BigGames to the index found to the sortedList

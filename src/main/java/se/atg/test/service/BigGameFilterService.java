@@ -9,7 +9,7 @@ import se.atg.test.dto.GameEvent;
 import se.atg.test.util.Utils;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import static se.atg.test.util.Utils.convertToLocalDate;
@@ -37,28 +37,21 @@ public class BigGameFilterService {
     }
 
     public List<GameEvent> filterBigGameEvent(@NonNull final List<GameEvent> inputGamesList) {
-        final List<GameEvent> processGamesList = new ArrayList<>(inputGamesList);
-        final List<GameEvent> bigGamesList = new ArrayList<>();
-        var gameEventListIterator = processGamesList.listIterator();
-        while (gameEventListIterator.hasNext()) {
-            var gameEvent = gameEventListIterator.next();
+        final List<GameEvent> processGamesList = inputGamesList
+                .stream()
+                .filter(this::gameDateAreInFuture)
+                .sorted(Comparator.comparing(GameEvent::getDate))
+                .toList();
 
-            var todayLocalDate = convertToLocalDate(weekService.getTodayDate());
-            var gameEventLocalDate = convertToLocalDate(gameEvent.getDate());
-            if (gameEventLocalDate.isBefore(todayLocalDate)) {
-                gameEventListIterator.remove();
-            } else if (isWinterBurstConditionApply(gameEvent)) {
-                if (isBigWinWinterBurstGame(gameEvent)) {
-                    bigGamesList.add(gameEvent);
-                    gameEventListIterator.remove();
-                }
-            } else if (weekService.isBigGameEventType(gameEvent)) {
-                bigGamesList.add(gameEvent);
-                gameEventListIterator.remove();
-            }
+        return processGamesList
+                .stream()
+                .filter(this::checkBigGameEvent)
+                .sorted(Comparator.comparing(GameEvent::getDate))
+                .toList();
+    }
 
-        }
-        return bigGamesList;
+    private boolean checkBigGameEvent(GameEvent gameEvent) {
+        return winterBurstConditionApplyAndGameDateisBigWindate(gameEvent) || weekService.isBigGameEventType(gameEvent);
     }
 
 
@@ -73,6 +66,13 @@ public class BigGameFilterService {
 
         return (gameDate.equals(startDate) || gameDate.equals(endDate))
                 || (gameDate.isBefore(endDate)) && gameDate.isAfter(startDate);
+    }
+
+    boolean gameDateAreInFuture(final GameEvent gameEvent) {
+        var todayLocalDate = convertToLocalDate(weekService.getTodayDate());
+        var gameEventLocalDate = convertToLocalDate(gameEvent.getDate());
+        var gameFreeLocalDate = convertToLocalDate(winterburstConfiguration.getNoGameDate());
+        return !gameFreeLocalDate.isEqual(gameEventLocalDate) && (gameEventLocalDate.isEqual(todayLocalDate) || gameEventLocalDate.isAfter(todayLocalDate));
     }
 
 
