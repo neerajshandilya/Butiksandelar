@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import se.atg.test.dto.GameEvent;
 import se.atg.test.service.GamesSortService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -17,9 +18,9 @@ import java.util.List;
 @Slf4j
 public class ButiksandelarController {
 
-    final private GamesSortService gamesSortService;
+    private final GamesSortService gamesSortService;
 
-    final private Validator validator;
+    private final Validator validator;
 
 
     @Autowired
@@ -35,9 +36,10 @@ public class ButiksandelarController {
     }
 
     @PostMapping
-    public List<String> getStatus(@RequestBody @Validated List<GameEvent> games) {
-        validator.validate(games, null);
-        return gamesSortService.processGameList(games);
+    public List<String> getStatus(@RequestBody @Validated List<GameEvent> inputGamesList) {
+        final List<GameEvent> processGamesList = new ArrayList<>(inputGamesList);
+        validator.validate(processGamesList, null);
+        return gamesSortService.processGameList(processGamesList);
     }
 
 
