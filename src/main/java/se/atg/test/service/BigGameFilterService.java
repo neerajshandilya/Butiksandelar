@@ -37,17 +37,21 @@ public class BigGameFilterService {
     }
 
     public List<GameEvent> filterBigGameEvent(@NonNull final List<GameEvent> inputGamesList) {
+        log.debug("inside filterBigGameEvent processing gamesList {} with a size of {}", inputGamesList, inputGamesList.size());
         final List<GameEvent> processGamesList = inputGamesList
                 .stream()
                 .filter(this::gameDateAreInFuture)
                 .sorted(Comparator.comparing(GameEvent::getDate))
                 .toList();
 
-        return processGamesList
+        final List<GameEvent> processedList = processGamesList
                 .stream()
                 .filter(this::checkBigGameEvent)
                 .sorted(Comparator.comparing(GameEvent::getDate))
                 .toList();
+
+        log.debug("sortGamesList after processing gamesList {} with a size of {}", processedList, processedList.size());
+        return processedList;
     }
 
     private boolean checkBigGameEvent(GameEvent gameEvent) {

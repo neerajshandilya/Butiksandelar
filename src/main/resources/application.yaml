@@ -8,6 +8,7 @@ spring:
   application:
     name: Butiksandelar
 
+
 application:
   big-game-configurations:
     - type: "V86"
@@ -23,3 +24,7 @@ application:
     allowed-game-type: 'V75'
     big-game-dates: [ '2022-12-23','2022-12-25','2022-12-26','2022-12-31' ]
   date-format: "yyyy-mm-dd"
+
+logging:
+  level:
+    root: warn

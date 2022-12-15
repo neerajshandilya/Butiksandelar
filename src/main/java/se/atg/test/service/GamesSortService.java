@@ -31,6 +31,7 @@ public class GamesSortService {
 
 
     public List<String> sortGamesList(@NonNull final List<GameEvent> inputGamesList) {
+        log.debug("inside sortGamesList processing gamesList {} with a size of {}", inputGamesList, inputGamesList.size());
         //Step(0) Sort all games as per their event date & discard any game that has event date in past
         final List<GameEvent> processGamesList = inputGamesList
                 .stream()
@@ -49,11 +50,12 @@ public class GamesSortService {
                 processedList.add(weekService.createFormattedString(entry.getKey(), gameEvent));
             }
         }
-
+        log.debug("sortGamesList after processing gamesList {} with a size of {}", processedList, processedList.size());
         return processedList;
     }
 
     private List<GameEvent> sortGamesListWeekly(@NonNull final List<GameEvent> inputGamesList) {
+        log.debug("inside sortGamesListWeekly processing gamesList {} with a size of {}", inputGamesList, inputGamesList.size());
         //Step(1) create a processing List from input
         final List<GameEvent> processGamesList = new ArrayList<>(inputGamesList);
 
@@ -66,7 +68,8 @@ public class GamesSortService {
 
         //Step(4) add BigGames to the index found to the sortedList
         processGamesList.addAll(indexToAddBigGameEvent, bigGamesList);
-        return processGamesList;
+        log.debug("sortGamesListWeekly after processing gamesList {} with a size of {}", processGamesList, processGamesList.size());
+        return processGamesList.stream().toList();
     }
 
     int findIndexToAddBigGameEvent(final GameEvent gameEvent) {

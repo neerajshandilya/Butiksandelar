@@ -27,29 +27,31 @@ public class GameEventValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return GameEvent.class == clazz;
+        return GameEvent.class.equals(clazz);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
-        List<GameEvent> gameEvents = (List<GameEvent>) target;
+        List<GameEvent> inputGamesList = (List<GameEvent>) target;
+        log.debug("processing gamesList {} with a size of {}", inputGamesList, inputGamesList.size());
+        inputGamesList.removeIf(this::validateGamesDate);
+        log.debug("after processing gamesList {} with a size of {}", inputGamesList, inputGamesList.size());
+    }
+
+    private boolean validateGamesDate(final GameEvent nextGameEvent) {
+        boolean result = false;
         var todayLocalDate = convertToLocalDate(weekService.getTodayDate());
-        var gameEventListIterator = gameEvents.listIterator();
-        while (gameEventListIterator.hasNext()) {
-            var nextGameEvent = gameEventListIterator.next();
-            var gameEventLocalDate = convertToLocalDate(nextGameEvent.getDate());
-            if (gameEventLocalDate.isBefore(todayLocalDate)) {
-                log.warn("invalid start date for the event {} on date {} will be discarded", nextGameEvent.getName(), nextGameEvent.getDate());
-                gameEventListIterator.remove();
-                // errors.rejectValue("startDate", "invalid start date for the event" + gameEvent.getName());
-            } else if (bigGameFilterService.isWinterBurstConditionApply(nextGameEvent)) {
-                log.debug("winter burst condition apply for event {} on date {}", nextGameEvent.getName(), nextGameEvent.getDate());
-                if (!bigGameFilterService.isBigWinWinterBurstGame(nextGameEvent)) {
-                    log.warn("During winterBurstGame condition doesn't matching for {} on date {}", nextGameEvent.getName(), nextGameEvent.getDate());
-                    gameEventListIterator.remove();
-                    // errors.rejectValue("gameType", "During winterBurstGame allowed game not matching" + gameEvent.getName());
-                }
+        var gameEventLocalDate = convertToLocalDate(nextGameEvent.getDate());
+        if (gameEventLocalDate.isBefore(todayLocalDate)) {
+            result = true;
+            log.warn("invalid start date for the event {} on date {} will be discarded", nextGameEvent.getName(), nextGameEvent.getDate());
+        } else if (bigGameFilterService.isWinterBurstConditionApply(nextGameEvent)) {
+            log.debug("winter burst condition apply for event {} on date {}", nextGameEvent.getName(), nextGameEvent.getDate());
+            if (!bigGameFilterService.isBigWinWinterBurstGame(nextGameEvent)) {
+                result = true;
+                log.warn("During winterBurstGame condition doesn't matching for {} on date {}", nextGameEvent.getName(), nextGameEvent.getDate());
             }
         }
+        return result;
     }
 }

@@ -38,11 +38,11 @@ public class WeekService {
         return bigGameConfigurations.contains(bigGameData);
     }
 
-    public Date getTodayDate() {
+    Date getTodayDate() {
         return Date.from(ZonedDateTime.now(clock).toInstant());
     }
 
-    public String createFormattedString(int weekNo, final GameEvent gameEvent) {
+    String createFormattedString(int weekNo, final GameEvent gameEvent) {
         final StringBuilder output = new StringBuilder();
         output.append(gameEvent.getType());
         output.append("(");
@@ -50,6 +50,7 @@ public class WeekService {
         if (weekNo > 0)
             output.append(" w").append(weekNo + 1);
         output.append(")");
+        log.debug("formatted String {}", output);
         return output.toString();
     }
 
