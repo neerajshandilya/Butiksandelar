@@ -3,7 +3,7 @@ package se.atg.test.service;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import se.atg.test.dto.ApplicationProp;
 import se.atg.test.dto.GameEvent;
 
@@ -11,12 +11,13 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Clock;
 import java.time.ZonedDateTime;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-@Component
 @Slf4j
+@Service
 public class WeekService {
 
     private final ApplicationProp applicationProp;
@@ -64,10 +65,10 @@ public class WeekService {
 
     int getWeekNumber(@NonNull final Date inputDate) {
         final GregorianCalendar calendar = new GregorianCalendar();
-        calendar.setFirstDayOfWeek(GregorianCalendar.MONDAY);
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
         calendar.setMinimalDaysInFirstWeek(7);
         calendar.setTime(inputDate);
-        return calendar.get(GregorianCalendar.WEEK_OF_YEAR);
+        return calendar.get(Calendar.WEEK_OF_YEAR);
     }
 
     int getWeekDiffFromTodayWeek(final GameEvent game) {

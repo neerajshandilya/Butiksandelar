@@ -11,7 +11,6 @@ import se.atg.test.util.Utils;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static se.atg.test.util.Utils.convertToLocalDate;
 
@@ -34,12 +33,13 @@ public class BigGameFilterService {
                 .getBigGameDates()
                 .stream()
                 .map(Utils::convertStringToLocalDate)
-                .collect(Collectors.toList());
+                .toList();
     }
 
-    public List<GameEvent> filterBigGameEvent(@NonNull final List<GameEvent> sortedGamesList) {
+    public List<GameEvent> filterBigGameEvent(@NonNull final List<GameEvent> inputGamesList) {
+        final List<GameEvent> processGamesList = new ArrayList<>(inputGamesList);
         final List<GameEvent> bigGamesList = new ArrayList<>();
-        var gameEventListIterator = sortedGamesList.listIterator();
+        var gameEventListIterator = processGamesList.listIterator();
         while (gameEventListIterator.hasNext()) {
             var gameEvent = gameEventListIterator.next();
 
@@ -81,6 +81,4 @@ public class BigGameFilterService {
                 &&
                 gameEvent.getType().equals(winterburstConfiguration.getAllowedGameType());
     }
-
-
 }

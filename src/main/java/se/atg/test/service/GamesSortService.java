@@ -30,11 +30,12 @@ public class GamesSortService {
     }
 
 
-    public List<String> processGameList(@NonNull final List<GameEvent> games) {
+    public List<String> processGameList(@NonNull final List<GameEvent> inputGamesList) {
+        final List<GameEvent> processGamesList = new ArrayList<>(inputGamesList);
         final List<String> processedList = new ArrayList<>();
         // key --> week_no , value --> GameEvents
         final MultiValueMap<Integer, GameEvent> weekNoGamesEventMap = new LinkedMultiValueMap<>();
-        games.forEach(
+        processGamesList.forEach(
                 game -> {
                     var diff = weekService.getWeekDiffFromTodayWeek(game);
                     weekNoGamesEventMap.add(diff, game);
@@ -59,16 +60,18 @@ public class GamesSortService {
         return processedList;
     }
 
-    private List<GameEvent> processGamesListByWeek(@NonNull final List<GameEvent> sortedGamesList) {
+    private List<GameEvent> processGamesListByWeek(@NonNull final List<GameEvent> inputGamesList) {
+        final List<GameEvent> processGamesList = new ArrayList<>(inputGamesList);
         //Step(1) Sort all games as per their event date
-        sortedGamesList.sort(Comparator.comparing(GameEvent::getDate));
+        processGamesList.sort(Comparator.comparing(GameEvent::getDate));
 
         //Step(2) Identify & Filter BigGame events from above sorted List
-        final List<GameEvent> bigGamesList = bigGameFilterService.filterBigGameEvent(sortedGamesList);
+        final List<GameEvent> bigGamesList = bigGameFilterService.filterBigGameEvent(processGamesList);
+        processGamesList.removeAll(bigGamesList);
 
         //Step(3) Sort Big games according to their date
         bigGamesList.sort(Comparator.comparing(GameEvent::getDate));
-        java.util.ListIterator<GameEvent> gameEventListIterator = sortedGamesList.listIterator();
+        java.util.ListIterator<GameEvent> gameEventListIterator = processGamesList.listIterator();
 
         int indexToAddBigGameEvent = 0; //Index where big games event should be added
         while (gameEventListIterator.hasNext()) {
@@ -78,15 +81,15 @@ public class GamesSortService {
             if (gameEventLocalDate.isBefore(todayLocalDate)) {
                 gameEventListIterator.remove();
             } else if (gameEventLocalDate.isEqual(todayLocalDate)) {
-                indexToAddBigGameEvent = sortedGamesList.indexOf(gameEvent) + 1;
+                indexToAddBigGameEvent = processGamesList.indexOf(gameEvent) + 1;
                 break;
             } else if (gameEventLocalDate.isAfter(todayLocalDate)) {
-                indexToAddBigGameEvent = sortedGamesList.indexOf(gameEvent);
+                indexToAddBigGameEvent = processGamesList.indexOf(gameEvent);
                 break;
             }
         }
         //Step(4) add BigGames to the index found to the sortedList
-        sortedGamesList.addAll(indexToAddBigGameEvent, bigGamesList);
-        return sortedGamesList;
+        processGamesList.addAll(indexToAddBigGameEvent, bigGamesList);
+        return processGamesList;
     }
 }
