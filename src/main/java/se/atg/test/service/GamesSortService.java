@@ -9,7 +9,6 @@ import se.atg.test.dto.GameEvent;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static se.atg.test.util.Utils.convertToLocalDate;
@@ -45,11 +44,7 @@ public class GamesSortService {
                 .parallelStream()
                 .collect(Collectors.groupingBy(weekService::getWeekDiffFromTodayWeek));
 
-        for (Map.Entry<Integer, List<GameEvent>> entry : weekNoGamesEventMap.entrySet()) {
-            for (GameEvent gameEvent : sortGamesListWeekly(entry.getValue())) {
-                processedList.add(weekService.createFormattedString(entry.getKey(), gameEvent));
-            }
-        }
+        weekNoGamesEventMap.forEach((key, value) -> sortGamesListWeekly(value).stream().map(gameEvent -> weekService.createFormattedString(key, gameEvent)).forEach(processedList::add));
         log.debug("sortGamesList after processing gamesList {} with a size of {}", processedList, processedList.size());
         return processedList;
     }
