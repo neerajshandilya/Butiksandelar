@@ -4,14 +4,13 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import se.atg.test.dto.GameEvent;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static se.atg.test.util.Utils.convertToLocalDate;
 
@@ -34,16 +33,17 @@ public class GamesSortService {
         log.debug("inside sortGamesList processing gamesList {} with a size of {}", inputGamesList, inputGamesList.size());
         //Step(0) Sort all games as per their event date & discard any game that has event date in past
         final List<GameEvent> processGamesList = inputGamesList
-                .stream()
+                .parallelStream()
                 .sorted(Comparator.comparing(GameEvent::getDate))
                 .filter(this::gameDateAreInFuture)
                 .toList();
 
         final List<String> processedList = new ArrayList<>();
+
         // key --> week_no , value --> GameEvents
-        final MultiValueMap<Integer, GameEvent> weekNoGamesEventMap = new LinkedMultiValueMap<>();
-        for (GameEvent game : processGamesList)
-            weekNoGamesEventMap.add(weekService.getWeekDiffFromTodayWeek(game), game);
+        var weekNoGamesEventMap = processGamesList
+                .parallelStream()
+                .collect(Collectors.groupingBy(weekService::getWeekDiffFromTodayWeek));
 
         for (Map.Entry<Integer, List<GameEvent>> entry : weekNoGamesEventMap.entrySet()) {
             for (GameEvent gameEvent : sortGamesListWeekly(entry.getValue())) {

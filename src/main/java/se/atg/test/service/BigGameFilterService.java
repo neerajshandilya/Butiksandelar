@@ -31,7 +31,7 @@ public class BigGameFilterService {
         this.winterburstConfiguration = applicationProp.getWinterburstConfiguration();
         winterBustBigGamesDate = winterburstConfiguration
                 .getBigGameDates()
-                .stream()
+                .parallelStream()
                 .map(Utils::convertStringToLocalDate)
                 .toList();
     }
@@ -39,7 +39,7 @@ public class BigGameFilterService {
     public List<GameEvent> filterBigGameEvent(@NonNull final List<GameEvent> inputGamesList) {
         log.debug("inside filterBigGameEvent processing gamesList {} with a size of {}", inputGamesList, inputGamesList.size());
         return inputGamesList
-                .stream()
+                .parallelStream()
                 .filter(this::gameDateAreInFuture)
                 .filter(this::checkBigGameEvent)
                 .sorted(Comparator.comparing(GameEvent::getDate))
