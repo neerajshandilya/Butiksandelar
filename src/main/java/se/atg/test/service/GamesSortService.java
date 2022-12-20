@@ -44,7 +44,11 @@ public class GamesSortService {
                 .parallelStream()
                 .collect(Collectors.groupingBy(weekService::getWeekDiffFromTodayWeek));
 
-        weekNoGamesEventMap.forEach((key, value) -> sortGamesListWeekly(value).stream().map(gameEvent -> weekService.createFormattedString(key, gameEvent)).forEach(processedList::add));
+        weekNoGamesEventMap
+                .forEach((key, value) -> sortGamesListWeekly(value)
+                        .stream()
+                        .map(gameEvent -> weekService.createFormattedString(key, gameEvent))
+                        .forEach(processedList::add));
         log.debug("sortGamesList after processing gamesList {} with a size of {}", processedList, processedList.size());
         return processedList;
     }
