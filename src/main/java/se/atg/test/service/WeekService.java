@@ -15,6 +15,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -43,15 +45,16 @@ public class WeekService {
     }
 
     String createFormattedString(int weekNo, final GameEvent gameEvent) {
-        final StringBuilder output = new StringBuilder();
-        output.append(gameEvent.getType());
-        output.append("(");
-        output.append(getDayString(gameEvent.getDate()));
+        var out = Stream.<String>builder();
+        out.add(gameEvent.getType());
+        out.add("(");
+        out.add(getDayString(gameEvent.getDate()));
         if (weekNo > 0)
-            output.append(" w").append(weekNo + 1);
-        output.append(")");
-        log.trace("formatted String {}", output);
-        return output.toString();
+            out.add(" w").add(String.valueOf(weekNo + 1));
+        out.add(")");
+        var formattedString = out.build().collect(Collectors.joining());
+        log.trace("formatted String {}", formattedString);
+        return formattedString;
     }
 
     String getDayString(@NonNull final Date date) {
