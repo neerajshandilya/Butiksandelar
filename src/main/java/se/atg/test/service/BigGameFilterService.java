@@ -2,7 +2,6 @@ package se.atg.test.service;
 
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.atg.test.dto.ApplicationProp;
 import se.atg.test.dto.GameEvent;
@@ -25,7 +24,7 @@ public class BigGameFilterService {
     private final List<LocalDate> winterBustBigGamesDate;
 
 
-    @Autowired
+    //@Autowired
     public BigGameFilterService(WeekService weekService, ApplicationProp applicationProp) {
         this.weekService = weekService;
         this.winterburstConfiguration = applicationProp.getWinterburstConfiguration();

@@ -1,7 +1,6 @@
 package se.atg.test.contoller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.Validator;
@@ -20,10 +19,11 @@ public class ButiksandelarController {
 
     private final GamesSortService gamesSortService;
 
+
     private final Validator validator;
 
 
-    @Autowired
+    //@Autowired
     public ButiksandelarController(GamesSortService gamesSortService, @Qualifier("gameEventValidator") Validator validator) {
         this.gamesSortService = gamesSortService;
         this.validator = validator;

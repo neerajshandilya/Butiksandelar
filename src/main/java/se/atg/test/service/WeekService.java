@@ -2,7 +2,6 @@ package se.atg.test.service;
 
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.atg.test.dto.ApplicationProp;
 import se.atg.test.dto.GameEvent;
@@ -25,7 +24,7 @@ public class WeekService {
     private final ApplicationProp applicationProp;
     private final Clock clock;
 
-    @Autowired
+    //@Autowired
     public WeekService(ApplicationProp applicationProp, Clock clock) {
         this.applicationProp = applicationProp;
         this.clock = clock;

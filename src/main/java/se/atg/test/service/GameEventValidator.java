@@ -1,7 +1,6 @@
 package se.atg.test.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -18,7 +17,7 @@ public class GameEventValidator implements Validator {
     private final WeekService weekService;
     private final BigGameFilterService bigGameFilterService;
 
-    @Autowired
+    //@Autowired
     public GameEventValidator(WeekService weekService, BigGameFilterService bigGameFilterService) {
         super();
         this.weekService = weekService;
