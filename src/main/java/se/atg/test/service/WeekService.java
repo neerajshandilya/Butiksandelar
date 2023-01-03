@@ -24,7 +24,6 @@ public class WeekService {
     private final ApplicationProp applicationProp;
     private final Clock clock;
 
-    //@Autowired
     public WeekService(ApplicationProp applicationProp, Clock clock) {
         this.applicationProp = applicationProp;
         this.clock = clock;

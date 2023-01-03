@@ -23,7 +23,6 @@ public class ButiksandelarController {
     private final Validator validator;
 
 
-    //@Autowired
     public ButiksandelarController(GamesSortService gamesSortService, @Qualifier("gameEventValidator") Validator validator) {
         this.gamesSortService = gamesSortService;
         this.validator = validator;

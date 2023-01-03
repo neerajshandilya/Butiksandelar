@@ -24,7 +24,6 @@ public class BigGameFilterService {
     private final List<LocalDate> winterBustBigGamesDate;
 
 
-    //@Autowired
     public BigGameFilterService(WeekService weekService, ApplicationProp applicationProp) {
         this.weekService = weekService;
         this.winterburstConfiguration = applicationProp.getWinterburstConfiguration();

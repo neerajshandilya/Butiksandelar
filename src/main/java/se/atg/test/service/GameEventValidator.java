@@ -17,7 +17,6 @@ public class GameEventValidator implements Validator {
     private final WeekService weekService;
     private final BigGameFilterService bigGameFilterService;
 
-    //@Autowired
     public GameEventValidator(WeekService weekService, BigGameFilterService bigGameFilterService) {
         super();
         this.weekService = weekService;
